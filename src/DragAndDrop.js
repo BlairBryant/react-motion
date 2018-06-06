@@ -6,22 +6,57 @@ class DragAndDrop extends Component {
     super()
 
     this.state = {
-      tasks: [{name: 'Do Stuff'}]
+      tasks: [{name: 'Do Stuff', category:"todo", bgcolor: "yellow"},
+              {name: 'Skip Rocks', category:"todo", bgcolor: "blue"},
+              {name: 'Eat Food', category:"complete", bgcolor: "gray"}]
     }
+  }
 
-    this.offsetData;
+  onDragOver(e) {
+    e.preventDefault()
+  }
+
+  onDragStart(e, id) {
+    console.log('onDragStart: ', id)
+    e.dataTransfer.setData("id", id)
+  }
+
+  onDrop(e, category) {
+    let id = e.dataTransfer.getData("id")
+    var tasks = this.state.tasks.filter(x => {
+      if (x.name === id) {
+        x.category = category
+      }
+      return x
+    })
+    this.setState({...this.state, tasks})
   }
 
   render() {
-    console.log(this.state)
-    return (
-      <div className="App" onDragOver={() => console.log('')} onDrop={e => this.drop(e)}>
-        <section className='todo'>
-        <div id='draggie' draggable={true} onDragStart={e => this.dragStart(e)}></div>
-        </section>
-        <section className='completed'></section>
-        
+    var tasks = {
+        todo: [],
+        complete: []
+    }
 
+    this.state.tasks.forEach(t => {
+      tasks[t.category].push(
+        <div key={t.name} draggable onDragStart={e => this.onDragStart(e, t.name)}
+             className="draggie" style={{background: t.bgcolor}}
+             >{t.name}</div>
+      )
+    })
+
+    return (
+      <div className="App">
+        <section className='todo' onDragOver={(e) => this.onDragOver(e)} onDrop={e => this.onDrop(e, "todo")}>
+          <h2>Todo</h2>
+          {tasks.todo}
+        </section>
+        <section className='completed' onDragOver={(e) => this.onDragOver(e)} onDrop={e => this.onDrop(e, "complete")}>
+          <h2>Completed</h2>
+          {tasks.complete}
+        </section>
+        
       </div>
     );
   }

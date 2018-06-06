@@ -22,11 +22,30 @@
   border: 1px solid;
 }
 
-#draggie {
-  width: 200px;
-  height: 200px;
-  background: yellow;
+.draggie {
+  width: 80%;
+  height: 50px;
   position: relative;
   top: 0;
   left: 0;
+}
+
+.yellowDiv {
+  width: 100px;
+  height: 100px;
+  background: yellow;
+}
+
+.greenParent {
+  width: 300px;
+  height: 500px;
+  background: green;
+  position: relative;
+}
+
+.orangeDiv {
+  width: 75px;
+  height: 75px;
+  background: orange;
+  border-radius: 50%;
 }
